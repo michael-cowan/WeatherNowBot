@@ -54,7 +54,7 @@ def convert_emoji(c):
     # Snow
     c = c.replace('A Snow Shower', e_dict[':cloud_with_snow:'])
     c = c.replace('Snow Shower', e_dict[':cloud_with_snow:'])
-    c = c.replace('Snow', e_dict[':cloud_with_snow:'])
+    c = c.replace('Snow', e_dict[':snowflake:'])
 
     # Storms
     c = c.replace('T Storms', e_dict[':thunder_cloud_and_rain:'])
