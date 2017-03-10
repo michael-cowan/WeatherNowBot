@@ -1,4 +1,5 @@
 """
+
     #### TO FIND KEYS AND SECRETS ####
 
     # Consumer key and secret found in your twitter app's settings
@@ -12,9 +13,9 @@
 """
 
 
-consumer_key = ''
-consumer_secret = ''
+consumer_key = 'BKlE8nLI2dtOzA8Cl50reKRQ9'
+consumer_secret = 'XFL0wwOHOeDafYmCrHt0NVbH1m9aAPwVmEaUBzHWB85Rj9jZ2R'
 
-access_token = ''
-access_token_secret = ''
+access_token = '817128668120092673-sjrRaAs8Y19a5BjjkdZL81bQUzYm0Ll'
+access_token_secret = '1RjGtnZ7voVUkeLQK5CeNgWNnsMwlX0e6ok8hPEx2byui'
 
