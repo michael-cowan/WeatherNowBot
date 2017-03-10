@@ -23,13 +23,13 @@ def convert_temps(t_ls):
 def convert_emoji(c):
 
     # Partly cloudy day
-    c = c.replace('More Sun Than Clouds', e_dict[':white_sun_with_small_cloud:'])
-    c = c.replace('Sun Through High Clouds', e_dict[':white_sun_with_small_cloud:'])
-    c = c.replace('Periods of Clouds & Sun', e_dict[':white_sun_with_small_cloud:'])
-    c = c.replace('Clouds & Sun', e_dict[':white_sun_with_small_cloud:'])
-    c = c.replace('Sunny To Partly Cloudy', e_dict[':white_sun_with_small_cloud:'])
-    c = c.replace('Partly Cloudy', e_dict[':white_sun_with_small_cloud:'])
-    c = c.replace('Sunshine Mixing w/ Clouds', e_dict[':white_sun_with_small_cloud:'])
+    c = c.replace('More Sun Than Clouds', e_dict[':sun_behind_small_cloud:'])
+    c = c.replace('Sun Through High Clouds', e_dict[':sun_behind_small_cloud:'])
+    c = c.replace('Periods of Clouds & Sun', e_dict[':sun_behind_small_cloud:'])
+    c = c.replace('Clouds & Sun', e_dict[':sun_behind_small_cloud:'])
+    c = c.replace('Sunny To Partly Cloudy', e_dict[':sun_behind_small_cloud:'])
+    c = c.replace('Partly Cloudy', e_dict[':sun_behind_small_cloud:'])
+    c = c.replace('Sunshine Mixing w/ Clouds', e_dict[':sun_behind_small_cloud:'])
 
     # Cloudy day
     c = c.replace('Considerable Cloudiness', e_dict[':sun_behind_cloud:'])
@@ -39,10 +39,10 @@ def convert_emoji(c):
     c = c.replace('Overcast', e_dict[':cloud:'])
 
     # Sunny day
-    c = c.replace('Mostly Sunny', e_dict[':black_sun_with_rays:'])
-    c = c.replace('Brilliant Sunshine', e_dict[':black_sun_with_rays:'])
-    c = c.replace('Sunshine', e_dict[':black_sun_with_rays:'])
-    c = c.replace('Sunny', e_dict[':black_sun_with_rays:'])
+    c = c.replace('Mostly Sunny', e_dict[':sun:'])
+    c = c.replace('Brilliant Sunshine', e_dict[':sun:'])
+    c = c.replace('Sunshine', e_dict[':sun:'])
+    c = c.replace('Sunny', e_dict[':sun:'])
 
     # Rain
     c = c.replace('A Few Showers', e_dict[':cloud_with_rain:'])
@@ -57,15 +57,15 @@ def convert_emoji(c):
     c = c.replace('Snow', e_dict[':snowflake:'])
 
     # Storms
-    c = c.replace('T Storms', e_dict[':thunder_cloud_and_rain:'])
-    c = c.replace('Thunderstorms', e_dict[':thunder_cloud_and_rain:'])
-    c = c.replace('Thunderstorm', e_dict[':thunder_cloud_and_rain:'])
-    c = c.replace('Thunder & Lightning', e_dict[':thunder_cloud_and_rain:'])
-    c = c.replace('Lightning', e_dict[':thunder_cloud_and_rain:'])
+    c = c.replace('T Storms', e_dict[':cloud_with_lightning_and_rain:'])
+    c = c.replace('Thunderstorms', e_dict[':cloud_with_lightning_and_rain:'])
+    c = c.replace('Thunderstorm', e_dict[':cloud_with_lightning_and_rain:'])
+    c = c.replace('Thunder & Lightning', e_dict[':cloud_with_lightning_and_rain:'])
+    c = c.replace('Lightning', e_dict[':cloud_with_lightning_and_rain:'])
 
     # Misc
     c = c.replace('Clouds', e_dict[':cloud:'])
-    c = c.replace('Sun', e_dict[':black_sun_with_rays:'])
+    c = c.replace('Sun', e_dict[':sun:'])
 
     return c
 
@@ -178,7 +178,7 @@ def get_weather_now(inp, typ = 'accuweather', dm = False):
     if typ == 'wunderground':
         qry = 'wunderground ' + inp
     elif typ == 'accuweather':
-        qry = 'accuweather' + inp
+        qry = 'accuweather ' + inp
 
     ans = search_google(qry, dm = dm)
 
