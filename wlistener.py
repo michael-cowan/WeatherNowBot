@@ -1,4 +1,8 @@
-import tweepy, time, json, sys, unicodedata
+import tweepy
+import time
+import json
+import sys
+import unicodedata
 import scraper as WS
 
 
