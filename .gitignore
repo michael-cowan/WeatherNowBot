@@ -1,2 +1,3 @@
 /secret_keys.py
+*.google-cookie
 *.pyc
