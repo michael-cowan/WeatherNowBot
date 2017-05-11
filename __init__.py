@@ -1,4 +1,1 @@
-from wlistener import *
-from scraper import *
-from secret_keys import *
-from main import *
+from main import start_bot
