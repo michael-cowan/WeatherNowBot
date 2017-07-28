@@ -1,4 +1,9 @@
-import bs4, requests, re, json, google, emoji
+import bs4
+import requests
+import re
+import json
+import google
+import emoji
 
 e_dict = emoji.EMOJI_UNICODE
 
