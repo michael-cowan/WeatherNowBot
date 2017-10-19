@@ -75,14 +75,14 @@ def convert_emoji(c):
     return c
 
 
-def search_google(qry, dm = False):
+def search_google(qry, dm = False, emojis=True):
     # Attempts to get data dictionary
     for j in google.search(qry, stop = 5):
         try:
             if 'wunderground' in qry:
                 data = get_wunderground_data(j)
             elif 'accuweather' in qry:
-                data = get_accuweather_data(j, dm = dm)
+                data = get_accuweather_data(j, dm, emojis)
             return data
         except:
             continue
@@ -122,7 +122,7 @@ def get_wunderground_data(url):
     return ans 
 
 
-def get_accuweather_data(url, dm = False):
+def get_accuweather_data(url, dm = False, emojis=True):
 
     site = requests.get(url)
 
@@ -150,7 +150,8 @@ def get_accuweather_data(url, dm = False):
     temps[1::2] = ['(feels ' + t + ')' for t in temps[1::2]]
 
     # Converts to emojis
-    conditions = map(convert_emoji, conditions)
+    if emojis:
+        conditions = map(convert_emoji, conditions)
 
     # Creates tweet string
     ts = 0
