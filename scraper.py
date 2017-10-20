@@ -174,6 +174,9 @@ def get_accuweather_data(url, dm = False, emojis=True):
         ts += 2
 
     ans = ans.strip('\n\n')
+    
+    if not emojis:
+        ans = ans.replace(u'\xb0F', 'F')
 
     return ans
 
