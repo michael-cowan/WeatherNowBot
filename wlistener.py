@@ -3,7 +3,7 @@ import time
 import json
 import sys
 import unicodedata
-import scraper as WS
+import scraper
 
 
 
@@ -18,7 +18,7 @@ class WeatherListener(tweepy.streaming.StreamListener):
         """
 
         # Finds answer based on message received
-        ans = WS.get_weather_now(msg, dm = dm)
+        ans = scraper.get_weather_now(msg, dm = dm)
 
         # Checks to see whether msg received was a tweet or DM
         if not dm:
