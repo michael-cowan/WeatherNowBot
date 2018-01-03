@@ -75,7 +75,7 @@ def convert_emoji(c):
     return c
 
 
-def search_google(qry, dm = False, emojis=True):
+def search_google(qry, dm=False, emojis=True):
     # Attempts to get data dictionary
     for j in google.search(qry, stop = 5):
         try:
@@ -96,8 +96,12 @@ def get_wunderground_data(url):
         
         Returns a dictionary
     """
+    headers = requests.utils.default_headers()
+    headers.update({
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
+    })
 
-    site = requests.get(url)
+    site = requests.get(url, headers=headers)
     soup = bs4.BeautifulSoup(site.text, 'lxml')
 
     city = soup.head.title.text.split(' Forecast')[0]
@@ -122,9 +126,12 @@ def get_wunderground_data(url):
     return ans 
 
 
-def get_accuweather_data(url, dm = False, emojis=True):
-
-    site = requests.get(url)
+def get_accuweather_data(url, dm=False, emojis=True):
+    headers = requests.utils.default_headers()
+    headers.update({
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
+    })
+    site = requests.get(url, headers=headers)
 
     soup = bs4.BeautifulSoup(site.text, 'lxml')
 
@@ -181,7 +188,7 @@ def get_accuweather_data(url, dm = False, emojis=True):
     return ans
 
 
-def get_weather_now(inp, typ = 'accuweather', dm = False):
+def get_weather_now(inp, typ='accuweather', dm=False, emojis=True):
 
     # String to search
     if typ == 'wunderground':
@@ -189,7 +196,7 @@ def get_weather_now(inp, typ = 'accuweather', dm = False):
     elif typ == 'accuweather':
         qry = 'accuweather ' + inp
 
-    ans = search_google(qry, dm = dm)
+    ans = search_google(qry, dm=dm, emojis=emojis)
 
     if ans:
         return ans
