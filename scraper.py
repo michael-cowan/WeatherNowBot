@@ -135,7 +135,7 @@ def get_accuweather_data(url, dm=False, emojis=True):
 
     soup = bs4.BeautifulSoup(site.text, 'lxml')
 
-    city = soup.a.contents[0]
+    city = soup.find_all('input', attrs={'id': 's'})[0]['value']
 
     data = [s for s in soup.findAll('ul') if 'Current Weather' in str(s) and '<ul>\n<li class' in str(s)][0]
 
