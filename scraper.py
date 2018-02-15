@@ -10,16 +10,19 @@ e_dict = emoji.EMOJI_UNICODE
 # Degree symbol
 deg = u'\N{DEGREE SIGN}'
 
+
 # round & int
 def r(n): return int(round(n))
 
 
 def C2F(t): return int(round((t * 1.8) + 32))
+
+
 def F2C(t): return int(round((t - 32) / 1.8))
 
 
 def convert_temps(t_ls, to='F'):
-    f = C2F if to=='F' else F2C
+    f = C2F if to == 'F' else F2C
     for i in xrange(len(t_ls)):
         num = t_ls[i].replace(u'\xb0', '')
         t_ls[i] = t_ls[i].replace(num, str(f(int(num))))
@@ -30,13 +33,20 @@ def convert_temps(t_ls, to='F'):
 def convert_emoji(c):
 
     # Partly cloudy day
-    c = c.replace('More Sun Than Clouds', e_dict[':sun_behind_small_cloud:'])
-    c = c.replace('Sun Through High Clouds', e_dict[':sun_behind_small_cloud:'])
-    c = c.replace('Periods of Clouds & Sun', e_dict[':sun_behind_small_cloud:'])
-    c = c.replace('Clouds & Sun', e_dict[':sun_behind_small_cloud:'])
-    c = c.replace('Sunny To Partly Cloudy', e_dict[':sun_behind_small_cloud:'])
-    c = c.replace('Partly Cloudy', e_dict[':sun_behind_small_cloud:'])
-    c = c.replace('Sunshine Mixing w/ Clouds', e_dict[':sun_behind_small_cloud:'])
+    c = c.replace('More Sun Than Clouds',
+                  e_dict[':sun_behind_small_cloud:'])
+    c = c.replace('Sun Through High Clouds',
+                  e_dict[':sun_behind_small_cloud:'])
+    c = c.replace('Periods of Clouds & Sun',
+                  e_dict[':sun_behind_small_cloud:'])
+    c = c.replace('Clouds & Sun',
+                  e_dict[':sun_behind_small_cloud:'])
+    c = c.replace('Sunny To Partly Cloudy',
+                  e_dict[':sun_behind_small_cloud:'])
+    c = c.replace('Partly Cloudy',
+                  e_dict[':sun_behind_small_cloud:'])
+    c = c.replace('Sunshine Mixing w/ Clouds',
+                  e_dict[':sun_behind_small_cloud:'])
 
     # Cloudy day
     c = c.replace('Considerable Cloudiness', e_dict[':sun_behind_cloud:'])
@@ -64,11 +74,16 @@ def convert_emoji(c):
     c = c.replace('Snow', e_dict[':snowflake:'])
 
     # Storms
-    c = c.replace('T Storms', e_dict[':cloud_with_lightning_and_rain:'])
-    c = c.replace('Thunderstorms', e_dict[':cloud_with_lightning_and_rain:'])
-    c = c.replace('Thunderstorm', e_dict[':cloud_with_lightning_and_rain:'])
-    c = c.replace('Thunder & Lightning', e_dict[':cloud_with_lightning_and_rain:'])
-    c = c.replace('Lightning', e_dict[':cloud_with_lightning_and_rain:'])
+    c = c.replace('T Storms',
+                  e_dict[':cloud_with_lightning_and_rain:'])
+    c = c.replace('Thunderstorms',
+                  e_dict[':cloud_with_lightning_and_rain:'])
+    c = c.replace('Thunderstorm',
+                  e_dict[':cloud_with_lightning_and_rain:'])
+    c = c.replace('Thunder & Lightning',
+                  e_dict[':cloud_with_lightning_and_rain:'])
+    c = c.replace('Lightning',
+                  e_dict[':cloud_with_lightning_and_rain:'])
 
     # Misc
     c = c.replace('Clouds', e_dict[':cloud:'])
@@ -79,7 +94,7 @@ def convert_emoji(c):
 
 def search_google(qry, dm=False, emojis=True, temptype='F'):
     # Attempts to get data dictionary
-    for j in google.search(qry, stop = 5):
+    for j in google.search(qry, stop=5):
         try:
             if 'wunderground' in qry:
                 data = get_wunderground_data(j)
@@ -95,12 +110,12 @@ def get_wunderground_data(url):
     """
         Connects to wunderground site and
         parses desired weather data
-        
         Returns a dictionary
     """
     headers = requests.utils.default_headers()
     headers.update({
-        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
+        'User-Agent': ("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) "
+                       "Gecko/20100101 Firefox/52.0"),
     })
 
     site = requests.get(url, headers=headers)
@@ -110,28 +125,33 @@ def get_wunderground_data(url):
     if '(' in city:
         city = city.split(' (')[0]
 
-    pull = soup.findAll('script', text = lambda x: x and 'wui.asyncCityPage' in x)[0]
+    pull = soup.findAll('script',
+                        text=lambda x: x and 'wui.asyncCityPage' in x)[0]
     txt = pull.text.replace('\t', '').replace('\n', '')
 
-    data = json.loads('{' + re.findall('"current_observation".*}', txt)[0])['current_observation']
-   # Finds weather conditions
-    condition  = data['condition']
+    data = json.loads('{' + re.findall('"current_observation".*}', txt)[0]
+                      )['current_observation']
+    # Finds weather conditions
+    condition = data['condition']
     condition += 'ing' if condition in ['Snow', 'Rain'] else ''
-    temp       = str(r(data['temperature'])) + deg + 'F'
-    feelslike  = str(r(data['feelslike'])) + deg + 'F'
-    wind       = r(data['wind_speed'])
+    temp = str(r(data['temperature'])) + deg + 'F'
+    feelslike = str(r(data['feelslike'])) + deg + 'F'
+    wind = r(data['wind_speed'])
 
     ans = "Weather in " + city
-    ans += ':\nCondition: ' + condition + '\nTemp: ' + temp + '\nFeels Like: ' + feelslike
-    ans +=  '\nWind Speed: ' + str(wind) + ' mph'
+    ans += ':\nCondition: ' + condition
+    ans += '\nTemp: ' + temp
+    ans += '\nFeels Like: ' + feelslike
+    ans += '\nWind Speed: ' + str(wind) + ' mph'
 
-    return ans 
+    return ans
 
 
 def get_accuweather_data(url, dm=False, emojis=True, temptype='F'):
     headers = requests.utils.default_headers()
     headers.update({
-        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
+        'User-Agent': ("Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) "
+                       "Gecko/20100101 Firefox/52.0"),
     })
     site = requests.get(url, headers=headers)
 
@@ -139,13 +159,30 @@ def get_accuweather_data(url, dm=False, emojis=True, temptype='F'):
 
     city = soup.find_all('input', attrs={'id': 's'})[0]['value']
 
-    data = [s for s in soup.findAll('ul') if 'Current Weather' in str(s) and '<ul>\n<li class' in str(s)][0]
+    data = [s for s
+            in soup.findAll('ul')
+            if 'Current Weather' in str(s) and '<ul>\n<li class' in str(s)][0]
 
-    times = [d.text.replace('Current Weather', 'Currently') for d in data.findAll('a', text = lambda x: x and x != 'More' and '\n' not in x)]
-    conditions = [s.text.title() for s in soup.findAll(attrs = {'class': 'cond'})]
-    conditions = [c.replace('With', 'w/').replace('And', '&').replace('Of', 'of') for c in conditions]
-    lbl = data.find(attrs = {'class': 'temp-label'}).text
-    temps = [t.text for t in data.findAll(attrs = {'class': lambda x: x and (x == 'large-temp' or x == 'realfeel')})]
+    times = [d.text.replace('Current Weather', 'Currently')
+             for d
+             in data.findAll('a',
+             text=lambda x: x and x != 'More' and '\n' not in x)]
+
+    conditions = [s.text.title()
+                  for s in soup.findAll(attrs={'class': 'cond'})]
+
+    conditions = [c.replace('With', 'w/')
+                  .replace('And', '&')
+                  .replace('Of', 'of')
+                  for c in conditions]
+
+    lbl = data.find(attrs={'class': 'temp-label'}).text
+
+    __temps = data.findAll(
+              attrs={'class': lambda x:
+                     x and (x == 'large-temp' or x == 'realfeel')})
+
+    temps = [t.text for t in __temps]
     temps[1::2] = [t[10:] for t in temps[1::2]]
 
     # Converts C to F for temps
@@ -179,18 +216,19 @@ def get_accuweather_data(url, dm=False, emojis=True, temptype='F'):
             spots = range(3)
 
     for j in spots:
-        ans += '%s:\n%s %s\n\n' %(times[j], conditions[j], temps[ts])
+        ans += '%s:\n%s %s\n\n' % (times[j], conditions[j], temps[ts])
         ts += 2
 
     ans = ans.strip('\n\n')
-    
+
     if not emojis:
         ans = ans.replace(u'\xb0', '')
 
     return ans
 
 
-def get_weather_now(inp, typ='accuweather', dm=False, emojis=True, temptype='F'):
+def get_weather_now(inp, typ='accuweather', dm=False, emojis=True,
+                    temptype='F'):
 
     # String to search
     if typ == 'wunderground':
@@ -204,6 +242,3 @@ def get_weather_now(inp, typ='accuweather', dm=False, emojis=True, temptype='F')
         return ans
     else:
         return "I'm sorry. I couldn't find weather for that city."
-
-
-
