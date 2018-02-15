@@ -15,12 +15,14 @@ def r(n): return int(round(n))
 
 
 def C2F(t): return int(round((t * 1.8) + 32))
+def F2C(t): return int(round((t - 32) / 1.8))
 
 
-def convert_temps(t_ls):
+def convert_temps(t_ls, to='F'):
+    f = C2F if to=='F' else F2C
     for i in xrange(len(t_ls)):
         num = t_ls[i].replace(u'\xb0', '')
-        t_ls[i] = t_ls[i].replace(num, str(C2F(int(num))))
+        t_ls[i] = t_ls[i].replace(num, str(f(int(num))))
 
     return t_ls
 
@@ -75,14 +77,14 @@ def convert_emoji(c):
     return c
 
 
-def search_google(qry, dm=False, emojis=True):
+def search_google(qry, dm=False, emojis=True, temptype='F'):
     # Attempts to get data dictionary
     for j in google.search(qry, stop = 5):
         try:
             if 'wunderground' in qry:
                 data = get_wunderground_data(j)
             elif 'accuweather' in qry:
-                data = get_accuweather_data(j, dm, emojis)
+                data = get_accuweather_data(j, dm, emojis, temptype)
             return data
         except:
             continue
@@ -126,7 +128,7 @@ def get_wunderground_data(url):
     return ans 
 
 
-def get_accuweather_data(url, dm=False, emojis=True):
+def get_accuweather_data(url, dm=False, emojis=True, temptype='F'):
     headers = requests.utils.default_headers()
     headers.update({
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0',
@@ -147,11 +149,11 @@ def get_accuweather_data(url, dm=False, emojis=True):
     temps[1::2] = [t[10:] for t in temps[1::2]]
 
     # Converts C to F for temps
-    if lbl == 'C':
-        temps = convert_temps(temps)
+    if lbl != temptype:
+        temps = convert_temps(temps, temptype)
 
-    # Adds F label to temps
-    temps = [t + 'F' for t in temps]
+    # Add temp scale
+    temps = [t + temptype for t in temps]
 
     # Adds 'feels like' string to correct temps
     temps[1::2] = ['(feels ' + t + ')' for t in temps[1::2]]
@@ -183,12 +185,12 @@ def get_accuweather_data(url, dm=False, emojis=True):
     ans = ans.strip('\n\n')
     
     if not emojis:
-        ans = ans.replace(u'\xb0F', 'F')
+        ans = ans.replace(u'\xb0', '')
 
     return ans
 
 
-def get_weather_now(inp, typ='accuweather', dm=False, emojis=True):
+def get_weather_now(inp, typ='accuweather', dm=False, emojis=True, temptype='F'):
 
     # String to search
     if typ == 'wunderground':
@@ -196,7 +198,7 @@ def get_weather_now(inp, typ='accuweather', dm=False, emojis=True):
     elif typ == 'accuweather':
         qry = 'accuweather ' + inp
 
-    ans = search_google(qry, dm=dm, emojis=emojis)
+    ans = search_google(qry, dm=dm, emojis=emojis, temptype=temptype)
 
     if ans:
         return ans
